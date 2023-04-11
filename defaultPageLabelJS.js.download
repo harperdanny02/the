@@ -1,0 +1,58 @@
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MagentoProductLabels
+ * @author    Webkul Software Private Limited
+ * @copyright Copyright (c) 2010-2017 Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+define(
+    [
+      'jquery'
+    ],
+    function ($,$t) {
+ 
+        $.widget(
+            'webkul.defaultPageLabelJS',
+            {
+                _create: function () {
+                    var element = this.element;
+                    var self = this;
+                    // alert("hrere");
+                    var baseurl=self.options.imageTag.base;
+
+                    $(".categoryPageImageLabel").each(function (index,element) {
+                        var id= $(this).val();
+                        var self1 = this;
+                        $.ajax({
+                            url: self.options.imageTag.url,
+                            type: 'POST',
+                            data: { id : id},
+                            dataType: 'json',
+                            success: function(data) {
+                                if(data['position']=='1'){
+                                    var img= "<img class=labels width=32 height=32 style='left:0%;top:4%' alt="+data['name']+" title="+data['name']+" src="+baseurl+data['image_name']+">"; 
+                                }else if(data['position']=='2'){
+                                    var img= "<img class=labels width=32 height=32 style='right:0%;top:4%'  alt="+data['name']+" title="+data['name']+" src="+baseurl+data['image_name']+">"; 
+                                }else if(data['position']=='3'){
+                                    var img= "<img class=labels width=32 height=32 style='left:0%;bottom:4%' alt="+data['name']+" title="+data['name']+" src="+baseurl+data['image_name']+">"; 
+                                }else if(data['position']=='4'){
+                                    var img= "<img class=labels width=32 height=32 style='right:0%;bottom:4%' alt="+data['name']+" title="+data['name']+" src="+baseurl+data['image_name']+">"; 
+                                }
+                                $($(self1).parent().parent().find("a").find("span").find("span")).prepend(img);
+                            }
+
+                      
+                    })
+                    });
+
+               
+                
+                },
+            
+            }
+        );
+        return $.webkul.defaultPageLabelJS;
+    }
+);
